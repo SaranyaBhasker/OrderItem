@@ -44,7 +44,6 @@ namespace OrderItem.Controllers
                     
                     obj1.userId = 1;
                     obj1.menuItemId = 1;
-                    obj1.menuItemName = "Ferrari";
                     
 
                     return Ok(obj1);
