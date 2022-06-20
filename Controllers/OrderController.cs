@@ -11,12 +11,12 @@ using System.Threading.Tasks;
 
 namespace OrderItem.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class OrderController : ControllerBase
     {
-        List<Cart> ltems = new List<Cart>();
-        string apiurl = "http://localhost:21298";
+        
+        
 
         [HttpGet("{id}")]
         public IActionResult GetCartBy(int id)
@@ -25,8 +25,7 @@ namespace OrderItem.Controllers
             using (var client = new HttpClient())
             {
 
-                client.BaseAddress = new Uri(apiurl);
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                client.BaseAddress = new Uri("http://localhost:21298/");
 
                 var responseTask = client.GetAsync("MenuItem");
                 responseTask.Wait();
@@ -34,13 +33,19 @@ namespace OrderItem.Controllers
 
                 if (result.IsSuccessStatusCode)
                 {
+                    List<Cart> ltems = new List<Cart>();
+
                     string jsonData = result.Content.ReadAsStringAsync().Result;
+
                     ltems = JsonConvert.DeserializeObject<List<Cart>>(jsonData);
 
                     Cart obj1 = ltems.SingleOrDefault(item => item.Id == id);
 
-                    obj1.menuItemId = 1;
+                    
                     obj1.userId = 1;
+                    obj1.menuItemId = 1;
+                    obj1.menuItemName = "Ferrari";
+                    
 
                     return Ok(obj1);
                 }
